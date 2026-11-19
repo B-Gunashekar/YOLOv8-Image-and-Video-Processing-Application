@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTSP Analysis | NexVision AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/theme.css') }}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="glass-orb top-left"></div>
+  <div class="glass-orb bottom-right"></div>
+
+  <div class="container my-5 content-wrapper">
+    <div class="glass-card text-center mb-5">
+      <h1 class="font-orbitron text-primary-cyan mb-2">RTSP INFERENCE</h1>
+      <p class="lead text-light mb-0">Real-time YOLOv8 object detection on IP cameras and RTSP streams.</p>
+      <a href="/" class="btn btn-outline-cyan mt-3 btn-sm">&larr; Back to Dashboard</a>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="glass-card">
+          
+          <!-- STATE 1: Input Form -->
+          <div id="input-state">
+            <form id="rtsp-form" class="upl-container" onsubmit="event.preventDefault(); startStream();">
+              <div class="mb-4">
+                <label for="rtsp-link" class="form-label text-info font-orbitron">RTSP URL:</label>
+                <input type="text" class="form-control bg-dark text-light border-secondary" id="rtsp-link" placeholder="rtsp://example.com/stream" required>
+              </div>
+
+              <div class="mb-4">
+                <label for="modelSelect" class="form-label text-info font-orbitron">Neural Network Task:</label>
+                <select class="form-select bg-dark text-light border-secondary" id="modelSelect" name="model_type">
+                  <option value="Detection">YOLOv8 Object Detection</option>
+                  <option value="Segmentation">YOLOv8 Instance Segmentation</option>
+                  <option value="Pose Estimation">YOLOv8 Human Pose Estimation</option>
+                </select>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-cyan btn-lg font-orbitron" id="analyze-btn" disabled>INITIALIZE STREAM</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STATE 2: Stream Output -->
+          <div id="result-state" class="text-center" style="display: none;">
+            <div class="result-header d-flex justify-content-between align-items-center mb-3">
+              <h4 class="font-orbitron text-success mb-0">LIVE INFERENCE</h4>
+              <button class="btn btn-sm btn-outline-danger" onclick="resetApp()">Close Stream &times;</button>
+            </div>
+            
+            <div class="inference-container">
+              <img id="result-stream" class="img-fluid rounded border border-success" alt="Inference Stream will appear here">
+            </div>
+
+            <div class="mt-3">
+               <button class="btn btn-outline-info btn-sm" onclick="downloadSnapshot()">Capture Snapshot 📷</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const rtspLink = document.getElementById('rtsp-link');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const modelSelect = document.getElementById('modelSelect');
+
+    const stateInput = document.getElementById('input-state');
+    const stateResult = document.getElementById('result-state');
+    const resultStream = document.getElementById('result-stream');
+
+    rtspLink.addEventListener('input', function () {
+      if (rtspLink.value.trim().startsWith('rtsp://') || rtspLink.value.trim().startsWith('http')) {
+        analyzeBtn.disabled = false;
+      } else {
+        analyzeBtn.disabled = true;
+      }
+    });
+
+    function startStream() {
+      const rtspUrl = rtspLink.value.trim();
+      const modelType = modelSelect.value;
+      
+      // Swap UI state
+      stateInput.style.display = 'none';
+      stateResult.style.display = 'block';
+
+      // Connect stream via img src to stay on page
+      const streamUrl = '/predict?source=' + encodeURIComponent(rtspUrl) + '&model_type=' + encodeURIComponent(modelType);
+      resultStream.src = streamUrl;
+    }
+
+    function downloadSnapshot() {
+      const canvas = document.createElement('canvas');
+      canvas.width = resultStream.naturalWidth || resultStream.width || 640;
+      canvas.height = resultStream.naturalHeight || resultStream.height || 480;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(resultStream, 0, 0);
+      
+      const link = document.createElement('a');
+      link.download = 'NexVision_RTSP_Snapshot.jpg';
+      link.href = canvas.toDataURL('image/jpeg');
+      link.click();
+    }
+
+    function resetApp() {
+      resultStream.src = "";
+      stateInput.style.display = 'block';
+      stateResult.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+/* 
+   NexVision AI - Cyber Glassmorphism Theme 
+*/
+
+:root {
+  --bg-color: #0b0f19;
+  --glass-bg: rgba(16, 24, 43, 0.6);
+  --glass-border: rgba(0, 221, 255, 0.2);
+  --primary-cyan: #00ddff;
+  --primary-glow: #00ddff88;
+  --accent-purple: #b026ff;
+  --text-light: #e0e6ed;
+}
+
+body {
+  background-color: var(--bg-color);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 221, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(176, 38, 255, 0.08) 0%, transparent 50%);
+  color: var(--text-light);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+}
+
+.text-primary-cyan {
+  color: var(--primary-cyan) !important;
+  text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(0, 221, 255, 0.15);
+  border-color: rgba(0, 221, 255, 0.4);
+}
+
+.btn-cyan {
+  background: linear-gradient(135deg, rgba(0, 221, 255, 0.8), rgba(0, 153, 255, 0.8));
+  border: 1px solid var(--primary-cyan);
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 221, 255, 0.3);
+}
+.btn-cyan:hover, .btn-cyan:focus {
+  background: linear-gradient(135deg, rgba(0, 221, 255, 1), rgba(0, 153, 255, 1));
+  color: #fff;
+  box-shadow: 0 0 25px rgba(0, 221, 255, 0.6);
+  transform: scale(1.02);
+}
+
+.btn-outline-cyan {
+  border: 1px solid var(--primary-cyan);
+  color: var(--primary-cyan);
+  background: transparent;
+  transition: all 0.3s ease;
+}
+.btn-outline-cyan:hover {
+  background: rgba(0, 221, 255, 0.1);
+  color: var(--primary-cyan);
+  box-shadow: 0 0 15px rgba(0, 221, 255, 0.4);
+}
+
+.form-control, .form-select {
+  background-color: rgba(0,0,0,0.4) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-light) !important;
+}
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(0, 221, 255, 0.25) !important;
+  border-color: var(--primary-cyan) !important;
+}
+
+/* Upload Area specific */
+.upload-area {
+  border: 2px dashed rgba(0, 221, 255, 0.3);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.upload-area:hover {
+  border-color: var(--primary-cyan);
+  background: rgba(0, 221, 255, 0.05);
+}
+.upload-area input[type="file"] {
+  display: none;
+}
+.upload-label {
+  cursor: pointer;
+  margin: 0;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+/* Glass Orbs */
+.glass-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.5;
+}
+.top-left {
+  width: 300px;
+  height: 300px;
+  background: var(--primary-cyan);
+  top: -100px;
+  left: -100px;
+}
+.bottom-right {
+  width: 400px;
+  height: 400px;
+  background: var(--accent-purple);
+  bottom: -100px;
+  right: -100px;
+}
+
+/* Result stream */
+#result-stream {
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+  max-height: 600px;
+  object-fit: contain;
+}
